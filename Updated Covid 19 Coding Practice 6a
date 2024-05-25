@@ -25,7 +25,7 @@ const intializeDbAndServer = async () => {
 intializeDbAndServer()
 
 app.get('/states/', async (request, response) => {
-  const getStateQuery = `
+  const getStatesQuery = `
     SELECT
     *
     FROM
@@ -33,12 +33,9 @@ app.get('/states/', async (request, response) => {
     ORDER BY
     state_id;`
 
-  const stateArray = await database.all(getStateQuery)
+  const stateArray = await database.all(getStatesQuery)
   response.send(
-    stateArray.map(eachState =>
-      convertStateDbObjectToResponseObject(eachState),
-    ),
-  )
+      convertStateDbObjectToResponseObject(stateArray))
 })
 
 app.get('/states/:stateId/', async (request, response) => {
@@ -128,7 +125,7 @@ app.get('/states/:stateId/stats/', async (request, response) => {
   FROM
   district
   WHERE
-  state_id = ${stateId};`;
+  state_id = ${stateId};`
 
   const stateArray = await database.get(getDistrictStateQuery)
   response.send(stateArray)
